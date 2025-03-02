@@ -1,4 +1,4 @@
-import { RenderExtension, PropertiesPanelExtension } from "../custom";
+import { PropertiesPanelExtension, RenderExtension } from "../custom";
 
 class BaseForm {
   constructor(FormClass, options, type, isAdditionalModules = true) {
@@ -11,29 +11,27 @@ class BaseForm {
         options.additionalModules.push(PropertiesPanelExtension);
       }
     }
-    this.customForm = new FormClass(options);
+    this.extendedForm = new FormClass(options);
   }
 
   importSchema(schema, data) {
-    return this.customForm.importSchema(schema, data);
+    return this.extendedForm.importSchema(schema, data);
   }
 
   saveSchema() {
     console.info("Saving schema...");
-    // saveSchema может отсутствовать в Form, поэтому проверим его наличие
-    const result = this.customForm.saveSchema
-      ? this.customForm.saveSchema()
+    const result = this.extendedForm.saveSchema
+      ? this.extendedForm.saveSchema()
       : null;
-    console.info("Schema saved:", result);
     return result;
   }
 
   on(event, ...args) {
-    // Унифицируем метод on для обработки возможной перегрузки
+    // Let's unify the on method to handle possible overload
     if (typeof args[0] === "function") {
-      this.customForm.on(event, args[0]); // Только колбэк
+      this.extendedForm.on(event, args[0]); // Callback only
     } else {
-      this.customForm.on(event, args[0], args[1]); // Приоритет и колбэк
+      this.extendedForm.on(event, args[0], args[1]); // Priority and callback
     }
   }
 }

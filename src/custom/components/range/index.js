@@ -1,14 +1,18 @@
+/*
+ * Import components and utilities from our extension API. Warning: for demo experiments only.
+ */
 import {
+  Description,
   Errors,
   FormContext,
-  Numberfield,
-  Description,
   Label,
+  Numberfield,
 } from "@bpmn-io/form-js";
 import { html, useContext } from "diagram-js/lib/ui";
-import classNames from "classnames";
-import RangeIcon from "../../../assets/svg/range.svg";
+import { formFieldClasses, prefixId } from "../../utils";
+
 import "../../../assets/css/range.css";
+import RangeIcon from "../../../assets/svg/range.svg";
 
 export const rangeType = "range";
 
@@ -17,14 +21,16 @@ export const rangeType = "range";
  * to render our components without the need of extra JSX transpilation.
  */
 export function RangeRenderer(props) {
-  // #region Constants
   const { disabled, errors = [], field, readonly, value } = props;
+
   const { description, range = {}, id, label } = field;
+
   const { min, max, step } = range;
+
   const { formId } = useContext(FormContext);
+
   const errorMessageId =
     errors.length === 0 ? undefined : `${prefixId(id, formId)}-error-message`;
-  // #endregion
 
   const onChange = ({ target }) => {
     props.onChange({
@@ -62,9 +68,10 @@ export function RangeRenderer(props) {
 RangeRenderer.config = {
   /* we can extend the default configuration of existing fields */
   ...Numberfield.config,
+  name: "Range",
   type: rangeType,
   label: "Range",
-  iconUrl: `data:image/svg+xml,${encodeURIComponent(RangeIcon)}`,
+  iconUrl: `data:image/svg+xml;utf8,${encodeURIComponent(RangeIcon)}`,
   propertiesPanelEntries: [
     "key",
     "label",
@@ -75,26 +82,3 @@ RangeRenderer.config = {
     "readonly",
   ],
 };
-
-function formFieldClasses(
-  type,
-  { errors = [], disabled = false, readonly = false } = {}
-) {
-  if (!type) {
-    throw new Error("type required");
-  }
-
-  return classNames("fjs-form-field", `fjs-form-field-${type}`, {
-    "fjs-has-errors": errors.length > 0,
-    "fjs-disabled": disabled,
-    "fjs-readonly": readonly,
-  });
-}
-
-function prefixId(id, formId) {
-  if (formId) {
-    return `fjs-form-${formId}-${id}`;
-  }
-
-  return `fjs-form-${id}`;
-}

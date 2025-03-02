@@ -1,9 +1,12 @@
 import { get, set } from "min-dash";
+
+/*
+ * Import components and utilities from our extension API. Warning: for demo experiments only.
+ */
 import {
   NumberFieldEntry,
   isNumberFieldEntryEdited,
 } from "@bpmn-io/properties-panel";
-import { html } from "diagram-js/lib/ui";
 
 /*
  * This is a custom properties provider for the properties panel.
@@ -14,7 +17,6 @@ export class RangePropertiesProvider {
     propertiesPanel.registerProvider(this, 500);
   }
 
-  //#region Function
   /**
    * Return the groups provided for the given field.
    *
@@ -43,6 +45,7 @@ export class RangePropertiesProvider {
       groups.splice(generalIdx + 1, 0, {
         id: "range",
         label: "Range",
+        name: "range",
         entries: RangeEntries(field, editField),
       });
 
@@ -104,14 +107,14 @@ function Min(props) {
 
   const debounce = (fn) => fn;
 
-  return html`<${NumberFieldEntry}
-    id=${id}
-    element=${field}
-    getValue=${getValue("min")}
-    label="Minimum"
-    setValue=${onChange("min")}
-    debounce=${debounce}
-  />`;
+  return NumberFieldEntry({
+    debounce,
+    element: field,
+    getValue: getValue("min"),
+    id,
+    label: "Minimum",
+    setValue: onChange("min"),
+  });
 }
 
 function Max(props) {
@@ -119,14 +122,14 @@ function Max(props) {
 
   const debounce = (fn) => fn;
 
-  return html`<${NumberFieldEntry}
-    id=${id}
-    element=${field}
-    getValue=${getValue("max")}
-    label="Maximum"
-    setValue=${onChange("max")}
-    debounce=${debounce}
-  />`;
+  return NumberFieldEntry({
+    debounce,
+    element: field,
+    getValue: getValue("max"),
+    id,
+    label: "Maximum",
+    setValue: onChange("max"),
+  });
 }
 
 function Step(props) {
@@ -134,16 +137,18 @@ function Step(props) {
 
   const debounce = (fn) => fn;
 
-  return html`<${NumberFieldEntry}
-    id=${id}
-    element=${field}
-    getValue=${getValue("step")}
-    min=${0}
-    label="Step"
-    setValue=${onChange("step")}
-    debounce=${debounce}
-  />`;
+  return NumberFieldEntry({
+    debounce,
+    element: field,
+    getValue: getValue("step"),
+    id,
+    min: 0,
+    label: "Step",
+    setValue: onChange("step"),
+  });
 }
+
+// helper //////////////////////
 
 function findGroupIdx(groups, id) {
   return groups.findIndex((g) => g.id === id);

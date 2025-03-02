@@ -1,3 +1,5 @@
+# Acknowledgments
+
 This is a fork from [EinArlyn/bpmn-form-extended](https://github.com/EinArlyn/bpmn-form-extended) library to be used in my own [project](https://github.com/Pundima-Lakshan/kinetiqBP)
 
 # bpmn-form-extended
@@ -100,7 +102,7 @@ export default minifyBundles;
 
 4. In the `vite.config.ts` file we add the property `optimizeDeps`
 
-```json
+```typescript
 optimizeDeps: {
     exclude: [
       '@einarlyn/bpmn-form-extended',
@@ -110,7 +112,7 @@ optimizeDeps: {
 
 5. In the `vite.config.ts` file add the `minifyBundles` plugin
 
-```json
+```typescript
 build: {
     rollupOptions: {
       output: {
@@ -127,10 +129,11 @@ build: {
     minify: false,
   },
 ```
+
 6. Create type declarations in `decs.d.ts` to stop typescript from complaining
 
 ```typescript
-declare module '@einarlyn/bpmn-form-extended';
+declare module "@einarlyn/bpmn-form-extended";
 ```
 
 7. Usage in React project
@@ -143,3 +146,17 @@ declare module '@einarlyn/bpmn-form-extended';
     }).customForm;
 ...
 ```
+
+## Extended components
+
+### Range
+
+New range component
+
+### File Editor
+
+Extend file input enabling to view uploaded files
+
+_Events_
+
+`fileEditor.open` - click on file editor icon

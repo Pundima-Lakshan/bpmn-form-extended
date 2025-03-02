@@ -1,12 +1,14 @@
-import { RangePropertiesProvider } from "./range";
-import { PlotterPropertiesProvider } from "./plotter";
+import { AutoInitializeValuesPropertiesProvider } from "./auto-initialize-values";
 import { DictionaryAttributesPropertiesProvider } from "./dictionary-attributes";
+import { PlotterPropertiesProvider } from "./plotter";
+import { RangePropertiesProvider } from "./range";
 
 export const PropertiesPanelExtension = {
   __init__: [
     "rangePropertiesProvider",
     "dictionaryAttributesPropertiesProvider",
     "plotterPropertiesProvider",
+    "autoInitializeValuesPropertiesProvider",
   ],
   rangePropertiesProvider: ["type", RangePropertiesProvider],
   dictionaryAttributesPropertiesProvider: [
@@ -14,4 +16,8 @@ export const PropertiesPanelExtension = {
     DictionaryAttributesPropertiesProvider,
   ],
   plotterPropertiesProvider: ["type", PlotterPropertiesProvider],
+  autoInitializeValuesPropertiesProvider: [
+    "type",
+    AutoInitializeValuesPropertiesProvider,
+  ],
 };

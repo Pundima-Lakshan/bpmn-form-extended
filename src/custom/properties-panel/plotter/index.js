@@ -1,10 +1,9 @@
-import { get, set } from "min-dash";
 import {
+  FeelTemplatingEntry,
   NumberFieldEntry,
-  isNumberFieldEntryEdited,
-  FeelTemplatingEntry
 } from "@bpmn-io/properties-panel";
 import { html } from "diagram-js/lib/ui";
+import { get, set } from "min-dash";
 
 export class PlotterPropertiesProvider {
   constructor(propertiesPanel) {
@@ -64,8 +63,8 @@ function PlotterEntries(field, editField) {
       component: AddModel,
       getValue,
       field,
-      onChange
-    }
+      onChange,
+    },
   ];
 }
 
