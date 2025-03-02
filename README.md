@@ -1,61 +1,63 @@
+This is a fork from [EinArlyn/bpmn-form-extended](https://github.com/EinArlyn/bpmn-form-extended) library to be used in my own [project](https://github.com/Pundima-Lakshan/kinetiqBP)
+
 # bpmn-form-extended
 
-Библиотека предназначена для расширения компонентной базы bpmn-js. Позволяет добавлять кастомные компоненты в модель bpmn-js.
+The library is intended to expand the bpmn-js component base. Allows you to add custom components to the bpmn-js model.
 
-## Структура проекта
+## Project structure
 
-### assets - ресурсы
+### assets
 
-- `css` - папка с css файлами
-- `fonts` - папка с шрифтами
-- `js` - папка с js файлами
-- `svg` - папка с svg файлами
+- `css` - folder with css files
+- `fonts` - font folder
+- `js` - folder with js files
+- `svg` - folder with svg files
 
-### custom - кастомные компоненты
+### custom components
 
-- `components` - папка с кастомными компонентами
-- `properties-panel` - папка с кастомными панелями свойств
-- `index.js` - файл для импорта всех кастомных компонентов
+- `components` - folder with custom components
+- `properties-panel` - folder with custom property panels
+- `index.js` - file for importing all custom components
 
-### form-js - переопределение функций библиотеки form-js
+### form-js - overriding form-js library functions
 
-- `base-form.js` - переопределение базовых функций библиотеки form-js
-- `form-editor.js` - описание и настройка редактора форм
-- `form-viewer.js` - описание и настройка просмотра форм
+- `base-form.js` - overriding the basic functions of the form-js library
+- `form-editor.js` - description and configuration of the form editor
+- `form-viewer.js` - description and settings for viewing forms
 
-## Как добавить собственный компонент
+## How to add your own component
 
-1. Создать папку компонента в папке `components`
-2. Создать файл `index.js` в папке компонента
-3. Реализовать компонент в файле `index.js`
-4. Импортировать компонент в файл `index.js` в папке `custom/components`
-5. Добавить класс компонента и зарегистрировать его
-6. Добавить новый компонент в `RenderExtension`
+1. Create a component folder in the `components` folder
+2. Create a file `index.js` in the component folder
+3. Implement the component in the `index.js` file
+4. Import the component into the `index.js` file in the `custom/components` folder
+5. Add a component class and register it
+6. Add a new component to `RenderExtension`
 
-## Как добавить собственную панель свойств
+## How to add your own properties panel
 
-1. Создать папку панели свойств в папке `properties-panel`
-2. Создать файл `index.js` в папке панели свойств
-3. Реализовать панель свойств в файле `index.js`
-4. Импортировать панель свойств в файл `index.js` в папке `custom/properties-panel`
-5. Добавить класс панели свойств и зарегистрировать его
-6. Добавить новую панель свойств в `PropertiesPanelExtension`
+1. Create a properties panel folder in the `properties-panel` folder
+2. Create a file `index.js` in the properties panel folder
+3. Implement the properties panel in the `index.js` file
+4. Import the properties panel into the `index.js` file in the `custom/properties-panel` folder
+5. Add a property panel class and register it
+6. Add a new property panel to `PropertiesPanelExtension`
 
-## Как добавить библиотеку в проект на Vue.js + Vite
+## How to add a library to a React + Vite project
 
-1. Установить библиотеку при помощи npm
+1. Install the library using npm
 
 ```bash
 npm install @einarlyn/bpmn-form-extended
 ```
 
-2. Импортируем css стили в файле `main.js`
+2. Importing css styles in a folder of your choice (example: main.js)
 
 ```javascript
-import "@einarlyn/bpmn-form-extended/assets/css/styles.css";
+import "@einarlyn/bpmn-form-extended/dist/assets/css/styles.css";
 ```
 
-3. По пути `src/plugins` создаём файл `minifyBundles.ts` и помещаем в него следующий код
+3. Along the path `src/plugins` we create a file `minifyBundles.ts` and place the following code in it
 
 ```typescript
 import { minify } from "terser";
@@ -96,7 +98,7 @@ const minifyBundles = () => {
 export default minifyBundles;
 ```
 
-4. В файле `vite.config.ts` добавляем добавляем свойство `optimizeDeps`
+4. In the `vite.config.ts` file we add the property `optimizeDeps`
 
 ```json
 optimizeDeps: {
@@ -106,7 +108,7 @@ optimizeDeps: {
   },
 ```
 
-5. В файле `vite.config.ts` добавляем плагин `minifyBundles`
+5. In the `vite.config.ts` file add the `minifyBundles` plugin
 
 ```json
 build: {
@@ -124,4 +126,20 @@ build: {
     },
     minify: false,
   },
+```
+6. Create type declarations in `decs.d.ts` to stop typescript from complaining
+
+```typescript
+declare module '@einarlyn/bpmn-form-extended';
+```
+
+7. Usage in React project
+
+```typescript
+...
+ const formEditor = new FormEditor({
+      container: editorContainerRef.current,
+      // additionalModules: [RangeField, FileEditorField, RangeFieldPropertiesProvider],
+    }).customForm;
+...
 ```
