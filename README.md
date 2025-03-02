@@ -147,7 +147,7 @@ declare module "@einarlyn/bpmn-form-extended";
 ...
 ```
 
-## Extended components
+## Extended components and properties
 
 ### Range
 
@@ -160,3 +160,7 @@ Extend file input enabling to view uploaded files
 _Events_
 
 `fileEditor.open` - click on file editor icon
+
+### Input Field - custom property
+
+Add option to include auto initialize options
