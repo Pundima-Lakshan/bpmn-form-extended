@@ -10,7 +10,11 @@ export class AutoInitializeValuesPropertiesProvider {
   //#region Function
   getGroups(field, editField) {
     return (groups) => {
-      if (field.type !== "textfield") {
+      if (
+        field.type !== "textfield" &&
+        field.type !== "select" &&
+        field.type !== "textarea"
+      ) {
         return groups;
       }
 
@@ -57,6 +61,10 @@ function AutoInitializeEntries(field, editField) {
           {
             value: "initiator-emp-no",
             label: "Initiator Emp No",
+          },
+          {
+            value: "initiator-position",
+            label: "Initiator Position",
           },
           {
             value: "initiator-faculty",
