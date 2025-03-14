@@ -1,6 +1,7 @@
 import { SelectEntry, TextFieldEntry } from "@bpmn-io/properties-panel";
 import { html } from "diagram-js/lib/ui";
 import { get, set } from "min-dash";
+import { AutoInitializeOptionsPreDef } from "../../../constants";
 
 export class AutoInitializeValuesPropertiesProvider {
   constructor(propertiesPanel) {
@@ -53,44 +54,7 @@ function AutoInitializeEntries(field, editField) {
   const getOptions = (key) => {
     return () => {
       if (key === "predef") {
-        return [
-          {
-            value: "initiator-fullname",
-            label: "Initiator Fullname",
-          },
-          {
-            value: "initiator-emp-no",
-            label: "Initiator Emp No",
-          },
-          {
-            value: "initiator-position",
-            label: "Initiator Position",
-          },
-          {
-            value: "initiator-faculty",
-            label: "Initiator Faculty",
-          },
-          {
-            value: "initiator-department",
-            label: "Initiator Department",
-          },
-          {
-            value: "assignee-fullname",
-            label: "Assignee Fullname",
-          },
-          {
-            value: "assignee-emp-no",
-            label: "Assignee Emp No",
-          },
-          {
-            value: "assignee-faculty",
-            label: "Assignee Faculty",
-          },
-          {
-            value: "assignee-department",
-            label: "Assignee Department",
-          },
-        ];
+        return AutoInitializeOptionsPreDef;
       }
     };
   };
