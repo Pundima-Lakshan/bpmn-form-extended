@@ -114,6 +114,13 @@ FileEditorRender.config = {
   label: "File editor",
   name: "File editor",
   iconUrl: `data:image/png;base64,${encodeURIComponent(FileEditorIcon)}`,
+  propertiesPanelEntries: [
+    "key",
+    "label",
+    "description",
+    "disabled",
+    "readonly",
+  ],
 };
 
 // helper //////////
