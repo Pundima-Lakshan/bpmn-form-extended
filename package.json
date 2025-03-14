@@ -1,11 +1,12 @@
 {
   "name": "@pundima-lakshan/bpmn-form-extended",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "An extension library for @bpmn.io/form-js that provides custom form editor functionalities",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "publish_package": "pnpm run build && npm publish"
   },
   "author": "Pundima Lakshan <pundimal@gmail.com>",
   "contributors": [
