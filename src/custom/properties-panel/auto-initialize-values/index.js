@@ -38,15 +38,15 @@ AutoInitializeValuesPropertiesProvider.$inject = ["propertiesPanel"];
 function AutoInitializeEntries(field, editField) {
   const setValue = (key) => {
     return (value) => {
-      const range = get(field, ["auto-initialize"], {});
+      const range = get(field, ["autoInitialize"], {});
 
-      editField(field, ["auto-initialize"], set(range, [key], value));
+      editField(field, ["autoInitialize"], set(range, [key], value));
     };
   };
 
   const getValue = (key) => {
     return () => {
-      return get(field, ["auto-initialize", key]);
+      return get(field, ["autoInitialize", key]);
     };
   };
 
