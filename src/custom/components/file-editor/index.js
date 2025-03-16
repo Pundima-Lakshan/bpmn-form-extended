@@ -67,7 +67,7 @@ export function FileEditorRender(props) {
   };
 
   const onFilesClick = (index) => {
-    eventBus.fire("fileEditor.open", { files: selectedFiles, index });
+    eventBus.fire("fileEditor.open", { files: selectedFiles, index, field });
   };
 
   const isInputDisabled = disabled || readonly || fileRegistry === null;
