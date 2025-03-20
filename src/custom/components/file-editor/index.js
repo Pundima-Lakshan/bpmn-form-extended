@@ -31,21 +31,20 @@ export function FileEditorRender(props) {
 
   const errorMessageId = `${domId}-error-message`;
 
-  const _selectedFiles =
+  const selectedFiles =
     fileRegistry === null ? EMPTY_ARRAY : fileRegistry.getFiles(filesKey);
-  const selectedFilesRef = useRef(_selectedFiles);
 
   useEffect(() => {
     if (filesKey && fileRegistry !== null && !fileRegistry.hasKey(filesKey)) {
       onChange({ value: null });
     }
-  }, [fileRegistry, filesKey, onChange, selectedFilesRef.length]);
+  }, [fileRegistry, filesKey, onChange, selectedFiles.length]);
 
   useEffect(() => {
     const data = new DataTransfer();
-    selectedFilesRef.forEach((file) => data.items.add(file));
+    selectedFiles.forEach((file) => data.items.add(file));
     fileInputRef.current.files = data.files;
-  }, [selectedFilesRef]);
+  }, [selectedFiles]);
 
   const onFileChange = (event) => {
     const input = event.target;
@@ -69,7 +68,7 @@ export function FileEditorRender(props) {
   };
 
   const onFilesClick = (index) => {
-    eventBus.fire("fileEditor.open", { files: selectedFilesRef, index, field });
+    eventBus.fire("fileEditor.open", { files: selectedFiles, index, field });
   };
 
   const isInputDisabled = disabled || readonly || fileRegistry === null;
@@ -100,10 +99,10 @@ export function FileEditorRender(props) {
           fileInputRef.current.click();
         }}
       >
-        B
+        Browse
       </button>
       <span class="fjs-form-field-label file-editor-files-links">
-        ${getSelectedFilesLabel(selectedFilesRef, onFilesClick)}
+        ${getSelectedFilesLabel(selectedFiles, onFilesClick)}
       </span>
     </div>
     <${Errors} id=${errorMessageId} errors=${errors} />
