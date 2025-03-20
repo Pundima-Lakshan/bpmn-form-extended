@@ -1,19 +1,17 @@
 import { Errors, FilePicker, FormContext, Label } from "@bpmn-io/form-js";
 import { html, useContext, useEffect, useRef } from "diagram-js/lib/ui";
-import Ids from "ids";
 import { formFieldClasses } from "../../utils";
 
-import { FileEditorEditIcon, FileEditorIcon } from "./file-editor-svg";
+import { PdfTemplateIcon, PdfTemplateEditIcon } from "./pdf-template-svg.js";
 
 import "../../../assets/css/file-editor.css";
+import { Template } from "webpack";
 
-const ids = new Ids();
 const EMPTY_ARRAY = [];
-const FILE_EDITOR_FILE_KEY_PREFIX = "file-editor::";
 
-export const fileEditorType = "file-editor";
+export const pdfTemplateType = "pdf-template";
 
-export function FileEditorRender(props) {
+export function PdfTemplateRender(props) {
   const fileInputRef = useRef(null);
   const { getService } = useContext(FormContext);
   const fileRegistry = getService("fileRegistry", false);
@@ -25,21 +23,35 @@ export function FileEditorRender(props) {
     errors = [],
     disabled,
     readonly,
-    value: filesKey = "",
+    value = "",
   } = props;
-  const { label, multiple = false, accept = "", validate = {} } = field;
+  const { label, multiple = false, validate = {} } = field;
 
   const errorMessageId = `${domId}-error-message`;
 
   const _selectedFiles =
-    fileRegistry === null ? EMPTY_ARRAY : fileRegistry.getFiles(filesKey);
+    fileRegistry === null
+      ? EMPTY_ARRAY
+      : fileRegistry.getFiles(value instanceof Array ? "" : value);
   const selectedFilesRef = useRef(_selectedFiles);
 
   useEffect(() => {
-    if (filesKey && fileRegistry !== null && !fileRegistry.hasKey(filesKey)) {
+    // If a change result in empting the files
+    if (
+      value &&
+      fileRegistry !== null &&
+      !fileRegistry.hasKey(value instanceof Array ? "" : value)
+    ) {
       onChange({ value: null });
     }
-  }, [fileRegistry, filesKey, onChange, selectedFilesRef.length]);
+  }, [fileRegistry, value, onChange, selectedFilesRef.length]);
+
+  useEffect(() => {
+    if ((!value) instanceof Array) {
+      return;
+    }
+    selectedFilesRef.current = value;
+  }, [value]);
 
   useEffect(() => {
     const data = new DataTransfer();
@@ -51,31 +63,38 @@ export function FileEditorRender(props) {
     const input = event.target;
 
     // If we have an associated file key but no files are selected, clear the file key and associated files
-    // Hopefully implement a way to pass it at form creation or pass a url to fetch
-    if ((input.files === null || input.files.length === 0) && filesKey !== "") {
-      fileRegistry.deleteFiles(filesKey);
-      onChange({ value: null });
+    if (
+      (input.files === null || input.files.length === 0) &&
+      value !== "" &&
+      (!value) instanceof Array
+    ) {
+      selectedFilesRef.current = [];
       return;
     }
 
     const files = Array.from(input.files);
 
-    // ensure fileKey exists
-    const updatedFilesKey =
-      filesKey ?? ids.nextPrefixed(FILE_EDITOR_FILE_KEY_PREFIX);
+    selectedFilesRef.current = files;
 
-    fileRegistry.setFiles(updatedFilesKey, files);
-    onChange({ value: updatedFilesKey });
+    eventBus.fire("pdfTemplate.new", {
+      files: selectedFilesRef,
+      index,
+      field,
+    });
   };
 
   const onFilesClick = (index) => {
-    eventBus.fire("fileEditor.open", { files: selectedFilesRef, index, field });
+    eventBus.fire("pdfTemplate.edit", {
+      files: selectedFilesRef,
+      index,
+      field,
+    });
   };
 
   const isInputDisabled = disabled || readonly || fileRegistry === null;
 
   return html`<div
-    class=${formFieldClasses(fileEditorType, { errors, disabled, readonly })}
+    class=${formFieldClasses(pdfTemplateType, { errors, disabled, readonly })}
   >
     <${Label} htmlFor=${domId} label=${label} required=${validate.required} />
     <input
@@ -86,9 +105,9 @@ export function FileEditorRender(props) {
       name=${domId}
       disabled=${isInputDisabled}
       multiple=${multiple}
-      accept=${accept}
       onChange=${onFileChange}
       required=${validate.required}
+      accept="application/json, application/pdf"
     />
     <div className="fjs-filepicker-container">
       <button
@@ -100,7 +119,7 @@ export function FileEditorRender(props) {
           fileInputRef.current.click();
         }}
       >
-        B
+        Browse
       </button>
       <span class="fjs-form-field-label file-editor-files-links">
         ${getSelectedFilesLabel(selectedFilesRef, onFilesClick)}
@@ -112,10 +131,10 @@ export function FileEditorRender(props) {
 
 FileEditorRender.config = {
   ...FilePicker.config,
-  type: fileEditorType,
-  label: "File editor",
-  name: "File editor",
-  iconUrl: `data:image/png;base64,${encodeURIComponent(FileEditorIcon)}`,
+  type: pdfTemplateType,
+  label: "PDF Template",
+  name: "PDF Template",
+  iconUrl: `data:image/png;base64,${encodeURIComponent(PdfTemplateIcon)}`,
   propertiesPanelEntries: [
     "key",
     "label",
@@ -128,20 +147,23 @@ FileEditorRender.config = {
 // helper //////////
 
 /**
- * @param {File[]} files
+ * @param {File[] | Template[]} files
  * @returns {string}
  */
 function getSelectedFilesLabel(files, clickHandler) {
   if (files.length === 0) {
-    return "No files selected";
+    return "No template selected";
   }
 
   return files.map((file, index) => {
+    const name =
+      file instanceof File ? file.name : (file.schema.name ?? `file ${index}`);
+
     return html`<span
       class="fjs-file-editor-file file-editor-files-open-link"
       onClick=${() => clickHandler(index)}
     >
-      <span>${file.name}</span> <span>${FileEditorEditIcon}</span>
+      <span>${name}</span> <span>${PdfTemplateEditIcon}</span>
     </span>`;
   });
 }
