@@ -5,7 +5,6 @@ import { formFieldClasses } from "../../utils";
 import { PdfTemplateIcon, PdfTemplateEditIcon } from "./pdf-template-svg.js";
 
 import "../../../assets/css/file-editor.css";
-import { Template } from "webpack";
 
 const EMPTY_ARRAY = [];
 
@@ -144,12 +143,6 @@ FileEditorRender.config = {
   ],
 };
 
-// helper //////////
-
-/**
- * @param {File[] | Template[]} files
- * @returns {string}
- */
 function getSelectedFilesLabel(files, clickHandler) {
   if (files.length === 0) {
     return "No template selected";
