@@ -128,7 +128,7 @@ export function PdfTemplateRender(props) {
   </div>`;
 }
 
-FileEditorRender.config = {
+PdfTemplateRender.config = {
   ...FilePicker.config,
   type: pdfTemplateType,
   label: "PDF Template",

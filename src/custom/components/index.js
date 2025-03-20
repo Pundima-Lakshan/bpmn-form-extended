@@ -32,7 +32,7 @@ export const RenderExtension = {
     "rangeField",
     "plotterField",
     "fileEditorField",
-    "pdfTemplatField",
+    "pdfTemplateField",
   ],
   rangeField: ["type", RangeField],
   plotterField: ["type", PlotterField],
