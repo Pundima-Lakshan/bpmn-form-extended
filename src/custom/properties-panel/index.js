@@ -5,17 +5,17 @@ import { RangePropertiesProvider } from "./range";
 
 export const PropertiesPanelExtension = {
   __init__: [
-    "rangePropertiesProvider",
-    "dictionaryAttributesPropertiesProvider",
-    "plotterPropertiesProvider",
+    // "rangePropertiesProvider",
+    // "dictionaryAttributesPropertiesProvider",
+    // "plotterPropertiesProvider",
     "autoInitializeValuesPropertiesProvider",
   ],
-  rangePropertiesProvider: ["type", RangePropertiesProvider],
-  dictionaryAttributesPropertiesProvider: [
-    "type",
-    DictionaryAttributesPropertiesProvider,
-  ],
-  plotterPropertiesProvider: ["type", PlotterPropertiesProvider],
+  // rangePropertiesProvider: ["type", RangePropertiesProvider],
+  // dictionaryAttributesPropertiesProvider: [
+  //   "type",
+  //   DictionaryAttributesPropertiesProvider,
+  // ],
+  // plotterPropertiesProvider: ["type", PlotterPropertiesProvider],
   autoInitializeValuesPropertiesProvider: [
     "type",
     AutoInitializeValuesPropertiesProvider,

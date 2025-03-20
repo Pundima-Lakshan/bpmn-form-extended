@@ -29,13 +29,13 @@ class PdfTemplateFormField {
 
 export const RenderExtension = {
   __init__: [
-    "rangeField",
-    "plotterField",
-    "fileEditorField",
+    // "rangeField",
+    // "plotterField",
+    // "fileEditorField",
     "pdfTemplateField",
   ],
-  rangeField: ["type", RangeField],
-  plotterField: ["type", PlotterField],
-  fileEditorField: ["type", FileEditorFormFields],
+  // rangeField: ["type", RangeField],
+  // plotterField: ["type", PlotterField],
+  // fileEditorField: ["type", FileEditorFormFields],
   pdfTemplateField: ["type", PdfTemplateFormField],
 };
