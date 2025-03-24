@@ -46,15 +46,12 @@ export function PdfTemplateRender(props) {
       return;
     }
 
-    // Allow only one file
-    readFile(input.files[0], "dataURL").then(async (basePdf) => {
-      selectedFilesRef.current = [basePdf];
+    selectedFilesRef.current = [input.files[0]];
 
-      eventBus.fire("pdfTemplate.new", {
-        files: selectedFilesRef.current,
-        index: -1,
-        field,
-      });
+    eventBus.fire("pdfTemplate.new", {
+      files: selectedFilesRef.current,
+      index: -1,
+      field,
     });
 
     event.target.value = "";
@@ -132,7 +129,17 @@ function getSelectedFilesLabel(files, clickHandler) {
   }
 
   return files.map((file, index) => {
-    const name = file instanceof File ? file.name : `file ${index}`;
+    let name = "";
+    if (file instanceof File) {
+      name = file.name;
+    } else {
+      const json = isJsonString(file);
+      if (!json) {
+        name = file;
+      } else {
+        name = json.fileName;
+      }
+    }
 
     return html`<span
       class="fjs-file-editor-file file-editor-files-open-link"
@@ -143,22 +150,10 @@ function getSelectedFilesLabel(files, clickHandler) {
   });
 }
 
-export const readFile = (file, type) => {
-  return new Promise((r) => {
-    const fileReader = new FileReader();
-    fileReader.addEventListener("load", (e) => {
-      if (e && e.target && e.target.result && file !== null) {
-        r(e.target.result);
-      }
-    });
-    if (file !== null) {
-      if (type === "text") {
-        fileReader.readAsText(file);
-      } else if (type === "dataURL") {
-        fileReader.readAsDataURL(file);
-      } else if (type === "arrayBuffer") {
-        fileReader.readAsArrayBuffer(file);
-      }
-    }
-  });
-};
+function isJsonString(str) {
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+}
